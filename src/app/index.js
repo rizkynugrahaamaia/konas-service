@@ -22,7 +22,7 @@ app.use(
   })
 );
 
-const db = require("./app/models");
+const db = require("./models");
 db.sequelize.sync()
 .then(() => {
   console.log('Connection has been established successfully.');
@@ -35,17 +35,17 @@ db.sequelize.sync()
 // });
 
 // simple route
-require('./app/routes/auth.routes')(app);
-require('./app/routes/user.routes')(app);
+require('./routes/auth.routes')(app);
+require('./routes/user.routes')(app);
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to konas application." });
 });
 
 // set port, listen for requests
-const PORT = process.env.PORT || 5000
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-});
+// const PORT = process.env.PORT || 5000
+// app.listen(PORT, () => {
+//   console.log(`Server is running on port ${PORT}.`);
+// });
 
 
 // function initial() {
@@ -64,3 +64,4 @@ app.listen(PORT, () => {
 //     name: "admin"
 //   });
 // }
+module.exports = app;
