@@ -1,8 +1,9 @@
+
 module.exports = {
-    HOST: "localhost",
-    USER: "root",
-    PASSWORD: "",
-    DB: "konas_api_db",
+    HOST: process.env.DB_HOST,
+    USER: process.env.DB_USERNAME,
+    PASSWORD: process.env.DB_PASSWORD,
+    DB: process.env.DB_NAME,
     dialect: "mysql",
     pool: {
       max: 5,
@@ -11,4 +12,3 @@ module.exports = {
       idle: 10000
     }
   };
-  // mysql -u root -p konas_api_db -h localhost
