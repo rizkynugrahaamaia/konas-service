@@ -13,8 +13,10 @@ exports.signup = async (req, res) => {
   try {
     const user = await User.create({
       username: req.body.username,
-      email: req.body.email,
+      nik: req.body.nik,
       password: bcrypt.hashSync(req.body.password, 8),
+      regional: req.body.regional,
+      presence: req.body.presence
     });
 
     if (req.body.roles) {
@@ -42,7 +44,7 @@ exports.signin = async (req, res) => {
   try {
     const user = await User.findOne({
       where: {
-        username: req.body.username,
+        nik: req.body.nik,
       },
     });
 
@@ -61,6 +63,7 @@ exports.signin = async (req, res) => {
       });
     }
 
+    // create the token as a key that user can use to hit endpoints and verify user as a correct user
     const token = jwt.sign({ id: user.id },
                            config.secret,
                            {
@@ -75,15 +78,34 @@ exports.signin = async (req, res) => {
       authorities.push("ROLE_" + roles[i].name.toUpperCase());
     }
 
-    req.session.token = token;
+    // req.session.token = token;
 
-    return res.status(200).send({
+    // set a cookie on the response header 
+
+    // return res.status(200).send({
+    //   id: user.id,
+    //   username: user.username,
+    //   nik: user.nik,
+    //   regional: user.regional,
+    //   presence: user.presence,
+    //   roles: authorities,
+    //   token: token
+    // });
+
+    return res
+		.status(200)
+		.cookie('token', token, {
+      httpOnly: true,
+			// sameSite: 'strict',
+			// path: '/api/auth/signin',
+			expires: new Date(new Date().getTime() + 100 * 50)
+		}).send({
       id: user.id,
       username: user.username,
-      email: user.email,
-      roles: authorities,
-      token: token
-    });
+      regional: user.regional,
+      roles: authorities
+    })
+
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
@@ -91,8 +113,8 @@ exports.signin = async (req, res) => {
 
 exports.signout = async (req, res) => {
   try {
-    req.session = null;
-    return res.status(200).send({
+    req.cookies = null;
+    return res.status(200).clearCookie('token').send({
       message: "You've been signed out!"
     });
   } catch (err) {

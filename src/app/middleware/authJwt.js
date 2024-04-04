@@ -4,10 +4,11 @@ const db = require("../models");
 const User = db.user;
 
 verifyToken = (req, res, next) => {
-  let token = req.session.token;
+  let token = req.cookies.token;
 
   if (!token) {
     return res.status(403).send({
+      status: 403,
       message: "No token provided!",
     });
   }
@@ -18,6 +19,7 @@ verifyToken = (req, res, next) => {
     (err, decoded) => {
       if (err) {
         return res.status(401).send({
+          status: 401,
           message: "Unauthorized!",
         });
       }

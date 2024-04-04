@@ -30,4 +30,11 @@ module.exports = function(app) {
     [authJwt.verifyToken, authJwt.isAdmin],
     controller.adminBoard
   );
+  
+  app.get(
+    "/participant-list",
+    [authJwt.verifyToken, authJwt.isAdmin],
+    controller.participantList
+  );
+
 };
