@@ -19,6 +19,7 @@ exports.signup = async (req, res) => {
       presence: req.body.presence
     });
 
+    console.log('masuk');
     if (req.body.roles) {
       const roles = await Role.findAll({
         where: {
