@@ -1,16 +1,16 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config");
+const role = require("../config/role.config");
 const db = require("../models");
 const User = db.user;
+const wrapper = require('../helpers/utils/wrapper');
+const { UnauthorizedError } = require('../helpers/error');
 
 verifyToken = (req, res, next) => {
   let token = req.cookies.token;
-
+  const path = req.route.path;
   if (!token) {
-    return res.status(403).send({
-      status: 403,
-      message: "No token provided!",
-    });
+    return wrapper.response(res, 'fail', { err: new UnauthorizedError('Unauthorized') });
   }
 
   jwt.verify(
@@ -18,14 +18,21 @@ verifyToken = (req, res, next) => {
     config.secret,      
     (err, decoded) => {
       if (err) {
-        return res.status(401).send({
-          status: 401,
-          message: "Unauthorized!",
-        });
+        return wrapper.response(res, 'fail', { err: new UnauthorizedError('Unauthorized') });
       }
-      req.userId = decoded.id;
+
+      if(decoded.role != "Super Admin"){
+        const allPath = (decoded.role == "Sekertaris" || decoded.role == "Admin") ? ((decoded.role == "Admin") ? role.admin:role.sekertaris)
+        : ((decoded.role == "Formal") ? role.formal:role.nonFormal);
+
+        if(!(allPath.indexOf(path) > -1)){
+          return wrapper.response(res, 'fail', { err: new UnauthorizedError('Role Unauthorized') });
+        }
+      }
+
+      req.userId = decoded.userId;
       next();
-      }
+    }
   );
 };
 

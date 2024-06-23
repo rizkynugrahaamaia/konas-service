@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
 require('dotenv').config()
+const basicAuth = require('../app/middleware/basicAuth');
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 // );
 
 app.use(cookieParser());
+app.use(basicAuth.init());
 
 const db = require("./models");
 db.sequelize.sync()
@@ -45,6 +47,8 @@ db.sequelize.sync()
 // simple route
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
+require('./routes/attribute.routes')(app);
+require('./routes/vote.routes')(app);
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to konas application." });
 });
