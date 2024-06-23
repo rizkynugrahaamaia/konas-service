@@ -24,13 +24,16 @@ db.sequelize = sequelize;
 
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
+db.region = require("../models/region.model.js")(sequelize, Sequelize);
+db.candidate = require("../models/candidate.model.js")(sequelize, Sequelize);
+db.vote = require("../models/vote.model.js")(sequelize, Sequelize);
 
-db.role.belongsToMany(db.user, {
-  through: "user_roles"
-});
-db.user.belongsToMany(db.role, {
-  through: "user_roles"
-});
+// db.role.belongsToMany(db.user, {
+//   through: "user_roles"
+// });
+// db.user.belongsToMany(db.role, {
+//   through: "user_roles"
+// });
 
 db.ROLES = ["admin", "formal", "unformal"];
 
