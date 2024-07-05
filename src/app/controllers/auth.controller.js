@@ -19,7 +19,6 @@ exports.signup = async (req, res) => {
       presence: req.body.presence
     });
 
-    console.log('masuk');
     if (req.body.roles) {
       const roles = await Role.findAll({
         where: {
@@ -99,7 +98,7 @@ exports.signin = async (req, res) => {
       httpOnly: true,
 			// sameSite: 'strict',
 			// path: '/api/auth/signin',
-			expires: new Date(new Date().getTime() + 100 * 50)
+			expires: new Date(new Date().getTime() + 1000 * 60 * 15)
 		}).send({
       id: user.id,
       username: user.username,
