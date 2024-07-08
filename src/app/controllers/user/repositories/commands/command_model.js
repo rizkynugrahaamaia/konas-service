@@ -15,6 +15,7 @@ const user = joi.object({
 const updateUser = joi.object({
   username: joi.string().required(),
   fullname: joi.string(),
+  password: joi.string().required(),
   region: joi.string(),
   status: joi.string(),
   roomMeet: joi.string(),
