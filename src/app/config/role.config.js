@@ -2,10 +2,12 @@ module.exports = {
   formal: [
     "/api/users/v1/user",
     "/api/vote/v1/vote/",
-    "/api/candidate/v1/list"
+    "/api/candidate/v1/list",
+    "/api/auth/v1/signout"
   ],
   nonFormal: [
     "/api/users/v1/user",
+    "/api/auth/v1/signout"
   ],
   admin: [
     "/api/users/v1/user",
@@ -17,6 +19,7 @@ module.exports = {
     "/api/users/v1/list",
     "/api/users/v1/delete/",
     "/api/users/v1/presence/",
+    "/api/auth/v1/signout"
   ],
   sekertaris: [
     "/api/users/v1/user",
@@ -27,5 +30,6 @@ module.exports = {
     "/api/users/v1/edit",
     "/api/users/v1/list",
     "/api/users/v1/delete/",
+    "/api/auth/v1/signout"
   ],
 };
