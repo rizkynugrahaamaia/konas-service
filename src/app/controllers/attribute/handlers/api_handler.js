@@ -21,7 +21,17 @@ const getManyRole = async (req, res) => {
   sendResponse(await getData());
 };
 
+const getManyCandidate = async (req, res) => {
+  const getData = async () => queryHandler.getManyCandidate();
+  const sendResponse = async (result) => {
+    (result.err) ? wrapper.response(res, 'fail', result, 'Get Candidate', httpError.NOT_FOUND)
+      : wrapper.response(res, 'success', result, 'Get Many Candidate', http.OK);
+  };
+  sendResponse(await getData());
+};
+
 module.exports = {
     getManyRegion,
     getManyRole,
+    getManyCandidate
 };
