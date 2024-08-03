@@ -63,6 +63,7 @@ const signResponse = (res, result, message = '', code = 200) => {
     httpOnly: true,
     expires: new Date(new Date().getTime() + 1000 * 60 * 15),
     sameSite: 'none',
+    secure: true 
   }).send({
     success: true,
     data,
