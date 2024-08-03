@@ -1,5 +1,6 @@
 
 const Query = require('./query');
+const QueryUser = require('../../../user/repositories/queries/query');
 const Command = require('../commands/command');
 const wrapper = require('../../../../helpers/utils/wrapper');
 const { NotFoundError } = require('../../../../helpers/error');
@@ -10,6 +11,7 @@ class Attribute {
 
   constructor(){
     this.query = new Query();
+    this.queryUser = new QueryUser();
     this.command = new Command();
   }
 
@@ -86,6 +88,10 @@ class Attribute {
     return wrapper.data(data);
   }
 
+  async viewManyCandidate(){
+    const { data } = await this.queryUser.findManyUser({ status: "Formal" });
+    return wrapper.data(data);
+  }
 }
 
 module.exports = Attribute;

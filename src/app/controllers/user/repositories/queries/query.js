@@ -35,6 +35,19 @@ class Query {
     const recordset = await User.count(payload);
     return wrapper.data(recordset);
   }
+
+  async findManyUser(param, sortParam = 1,fieldName = "fullname") {
+    const payload = {
+      where: param,
+      attributes: ['userId', 'fullname'],
+      order: [
+        [fieldName, (sortParam == 1) ? 'ASC':'DESC'],
+      ],
+    };
+
+    const recordset = await User.findAll(payload);
+    return wrapper.responseDb(recordset);
+  }
 }
 
 module.exports = Query;

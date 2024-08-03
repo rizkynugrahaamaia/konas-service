@@ -50,7 +50,7 @@ require('./routes/user.routes')(app);
 require('./routes/attribute.routes')(app);
 require('./routes/vote.routes')(app);
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to konas application v2." });
+  res.json({ message: "Welcome to konas application v2.1" });
 });
 
 

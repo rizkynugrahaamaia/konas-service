@@ -20,7 +20,17 @@ const getManyRole = async () => {
   return result;
 };
 
+const getManyCandidate = async () => {
+  const getData = async () => {
+    const result = await region.viewManyCandidate();
+    return result;
+  };
+  const result = await getData();
+  return result;
+};
+
 module.exports = {
   getManyRegion,
   getManyRole,
+  getManyCandidate,
 };
