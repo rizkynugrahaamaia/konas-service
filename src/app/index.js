@@ -8,7 +8,8 @@ const app = express();
 
 app.use(cors({
   origin: process.env.WEB_URL || 'http://localhost:3000',
-  credentials: true
+  credentials: true,
+  allowedHeaders: ['Authorization', 'Content-Type'],
 }));
 
 // parse requests of content-type - application/json
