@@ -61,7 +61,6 @@ const signResponse = (res, result, message = '', code = 200) => {
   const { token, info:data } = result.data;
   res.status(code).cookie('token', token, {
     domain: 'konas-web.vercel.app', // Set to your base domain
-    path: '/',
     httpOnly: true,
     expires: new Date(new Date().getTime() + 1000 * 60 * 15),
     sameSite: 'None',
