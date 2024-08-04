@@ -7,10 +7,13 @@ module.exports = function(app) {
 
   //global level middleware
   app.use(function(req, res, next) {
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, Content-Type, Accept"
-    );
+    // res.header(
+    //   "Access-Control-Allow-Headers",
+    //   "Origin, Content-Type, Accept"
+    // );
+    res.header('Access-Control-Allow-Origin',  process.env.WEB_URL); // Replace with your actual domain
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     next();
   });
 
