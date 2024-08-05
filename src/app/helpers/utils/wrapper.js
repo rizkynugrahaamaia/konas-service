@@ -63,7 +63,7 @@ const signResponse = (res, result, message = '', code = 200) => {
     // domain: 'konas-web.vercel.app', // Set to your base domain
     httpOnly: true,
     expires: new Date(new Date().getTime() + 1000 * 60 * 15),
-    sameSite: 'none',
+    sameSite: 'None',
     secure: true 
   }).send({
     success: true,
