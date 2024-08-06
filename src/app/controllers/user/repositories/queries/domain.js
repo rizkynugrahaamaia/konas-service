@@ -29,7 +29,7 @@ class User {
     const page = (size < 0) ? 0:(parseInt(payload.page)) ? (parseInt(payload.page)-1)*size:0;
     let param = { status: { [Op.not]: "Super Admin"} };
     if(search) {
-      param.username = { [Op.like]: `%${search}%`};
+      param.fullname = { [Op.like]: `%${search}%`};
     }
 
     if(regionId) {
