@@ -27,7 +27,7 @@ class User {
     const { search, region:regionId, status:roleId, presence, csv } = payload;
     const size = (csv) ? -1:(parseInt(payload.size)) ? parseInt(payload.size):10;
     const page = (size < 0) ? 0:(parseInt(payload.page)) ? (parseInt(payload.page)-1)*size:0;
-    let param = { status: { [Op.not]: "Super Admin"} };
+    let param = { status: { [Op.not]: ['Super Admin', 'Admin', 'Sekertaris'] } };
     if(search) {
       param.fullname = { [Op.like]: `%${search}%`};
     }
