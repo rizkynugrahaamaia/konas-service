@@ -38,6 +38,16 @@ class Vote {
     return wrapper.data(data);
   }
 
+  async viewOneVote(userId) {
+      const param = { userId }
+      const vote = await this.query.findOneVote(param);
+      if (vote.err) {
+        return wrapper.error(new NotFoundError('Can not find vote'));
+      }
+      const { data } = vote;
+      return wrapper.data(data);
+  }
+
 }
 
 module.exports = Vote;

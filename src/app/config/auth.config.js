@@ -1,5 +1,5 @@
 module.exports = {
-  secret: "konas-secret-key",
+  secret: process.env.JWT_SECRET,
   basicAuthApi: [
     {
       username: process.env.BASIC_AUTH_USERNAME,

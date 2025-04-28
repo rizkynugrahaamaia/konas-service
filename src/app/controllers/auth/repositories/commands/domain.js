@@ -8,10 +8,10 @@ const config = require("../../../../config/auth.config");
 const jwt = require("jsonwebtoken");
 const { v4:uuid } = require('uuid');
 
-const algorithm = 'aes-256-ctr';
-const secretKey = 'Kon@s2024';
+const algorithm = 'aes-256-cbc';
+const secretKey = process.env.ENCRYPTION_KEY; // Kunci 32 bytes untuk AES-256
 
-class Auth {
+class Auth {  
 
   constructor(){
     this.commandUser = new CommandUser();
@@ -38,7 +38,7 @@ class Auth {
     const dataRole = await this.queryAttribute.findOneRole((roleId == "Super Admin" || roleId == "Sekertaris" || roleId == "Admin") ? { name: roleId }:{ roleId });
     if (dataRole.err) {
       return wrapper.error(new NotFoundError('status peserta tidak ditemukan'));
-    }
+    }   
 
     const { fullname:region } = dataRegion.data;
     const { name:status } = dataRole.data;

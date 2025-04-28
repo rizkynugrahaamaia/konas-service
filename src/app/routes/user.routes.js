@@ -1,19 +1,12 @@
 //Get Public & Protected Resources
-const { authJwt, basicAuth } = require("../middleware");
+const { 
+  authJwt, 
+  // basicAuth 
+} = require("../middleware");
 const controller = require("../controllers/user.controller");
 const user = require("../controllers/user/handlers/api_handler");
 
 module.exports = function(app) {
-  app.use(function(req, res, next) {
-    // res.header(
-    //   "Access-Control-Allow-Headers",
-    //   "Origin, Content-Type, Accept"
-    // );
-    res.header('Access-Control-Allow-Origin',  process.env.WEB_URL); // Replace with your actual domain
-    res.header('Access-Control-Allow-Credentials', 'true');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    next();
-  });
 
   app.get("/api/test/all", controller.allAccess);
   app.get("/api/test/user", [authJwt.verifyToken], controller.userBoard);
@@ -26,9 +19,9 @@ module.exports = function(app) {
   app.get("/api/users/v1/user/:userId", authJwt.verifyToken, user.getUser);
   app.post("/api/users/v1/create", authJwt.verifyToken, user.createUser);
   app.put("/api/users/v1/edit", authJwt.verifyToken, user.updateDataUser);
-  app.get("/api/users/v1/user/:userId", basicAuth.isAuthenticated, user.getUser);
+  // app.get("/api/users/v1/user/:userId", basicAuth.isAuthenticated, user.getUser);
   app.get("/api/users/v1/list", authJwt.verifyToken, user.getListUser);
   app.post("/api/users/v1/presence/:userId", authJwt.verifyToken, user.updatePresenceUser);
-  app.del("/api/users/v1/delete/:userId", authJwt.verifyToken, user.deleteUser);
+  app.delete("/api/users/v1/delete/:userId", authJwt.verifyToken, user.deleteUser);
 
 };

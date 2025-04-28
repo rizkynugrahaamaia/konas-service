@@ -1,4 +1,3 @@
-
 const Query = require('../queries/query');
 const QueruAttribute = require('../../../attribute/repositories/queries/query');
 const Command = require('./command');
@@ -7,8 +6,8 @@ const commonUtil = require('../../../../helpers/utils/common');
 const { NotFoundError, ConflictError, UnauthorizedError } = require('../../../../helpers/error');
 const { v4:uuid } = require('uuid');
 
-const algorithm = 'aes-256-ctr';
-const secretKey = 'Kon@s2024';
+const algorithm = 'aes-256-cbc';
+const secretKey = process.env.ENCRYPTION_KEY; // Kunci 32 bytes untuk AES-256
 
 class User {
 

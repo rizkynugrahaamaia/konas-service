@@ -12,7 +12,20 @@ const createVote = async (payload) => {
   return postCommand(payload);
 };
 
+const deleteCandidate = async () => {
+  const postCommand = async () => vote.deleteCandidate();
+  return postCommand();
+};
+
+const deleteVote = async () => {
+  const postCommand = async () => vote.deleteVote();
+  return postCommand();
+};
+
+
 module.exports = {
   createCandidate,
-  createVote
+  createVote,
+  deleteCandidate,
+  deleteVote
 };

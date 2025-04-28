@@ -1,16 +1,20 @@
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
-require('dotenv').config()
+require('dotenv').config();
 const basicAuth = require('../app/middleware/basicAuth');
 
 const app = express();
 
-app.use(cors({
-  origin: process.env.WEB_URL || 'http://localhost:3000',
-  credentials: true,
-  allowedHeaders: ['Authorization', 'Content-Type'],
-}));
+// Konfigurasi CORS
+const corsOptions = {
+  origin: process.env.WEB_URL, // Domain yang diizinkan
+  credentials: true, // Mengizinkan pengiriman cookie lintas domain
+  allowedHeaders: ['Authorization', 'Content-Type', 'Accept'], // Header yang diizinkan
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Metode HTTP yang diizinkan
+};
+
+app.use(cors(corsOptions)); // Terapkan middleware CORS
 
 // parse requests of content-type - application/json
 app.use(express.json());
@@ -18,41 +22,29 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
-// app.use(
-//   cookieSession({
-//     name: "konas-session",
-//     keys: ["COOKIE_SECRET"], // should use as secret environment variable
-//     httpOnly: true,
-//     sameSite: 'strict',
-//     signed: false,
-//     path: '/api/auth/signin',
-//     expires: new Date(new Date().getTime() + 100 * 1000),
-//   })
-// );
-
+// Initialize cookie-parser
 app.use(cookieParser());
+
 app.use(basicAuth.init());
 
 const db = require("./models");
 db.sequelize.sync()
-.then(() => {
-  console.log('Connection has been established successfully.');
-}).catch(err => {
-  console.error('Unable to connect to the database:', err);
- });
-// db.sequelize.sync({force: true}).then(() => {
-//   console.log('Drop and Resync Db');
-//   initial();
-// });
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
 
-// simple route
+// Routes
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
 require('./routes/attribute.routes')(app);
 require('./routes/vote.routes')(app);
+
+// Simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to konas application v2." });
 });
-
 
 module.exports = app;

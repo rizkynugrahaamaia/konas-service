@@ -3,12 +3,21 @@ const db = require("../../../../models");
 const User = db.user;
 
 class Query {
+
+  //Function ini digunakan untuk mencari data user berdasarkan parameter yang diberikan.
   async findOneUser(parameter) {
+
+    //payload adalah objek yang berisi parameter pencarian untuk mencari data user.
     const payload = {
       where: parameter
     };
-
+    
+    // Menggunakan metode findOne dari model User untuk mencari satu data user 
+    // yang sesuai dengan parameter yang diberikan.
     const recordset = await User.findOne(payload);
+
+    // memproses hasil dari operasi database (result) dan 
+    // mengembalikan objek respons dengan format tertentu.
     return wrapper.responseDb(recordset);
   }
 

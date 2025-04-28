@@ -44,6 +44,10 @@ const paginationResponse = (res, type, result, message = '', code = 200) => {
 
 const responseDb = (result, message = '', code = 200) => {
   let data = (result) ? result.dataValues:null;
+
+  // memastikan bahwa jika result adalah array, 
+  // semua nilai dataValues dari setiap elemen akan diekstraksi 
+  // dan dikumpulkan dalam satu array.
   if(Array.isArray(result)) {
     const list = new Array;
     for(let item of result) {
@@ -54,7 +58,8 @@ const responseDb = (result, message = '', code = 200) => {
     data = list;
   };
 
-  return {err: (result) ? null:true, data};
+  // Mengembalikan Objek Response
+  return {err: (result)? null : true, data};
 };
 
 const signResponse = (res, result, message = '', code = 200) => {

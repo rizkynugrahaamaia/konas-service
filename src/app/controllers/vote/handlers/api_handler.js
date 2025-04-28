@@ -16,8 +16,18 @@ const getManyCandidate = async (req, res) => {
 const getManyVote = async (req, res) => {
   const getData = async () => queryHandler.getManyVote();
   const sendResponse = async (result) => {
-    (result.err) ? wrapper.response(res, 'fail', result, 'Get Vote', httpError.NOT_FOUND)
+    (result.err) ? wrapper.response(res, 'fail', result, 'Get Many Vote', httpError.NOT_FOUND)
       : wrapper.response(res, 'success', result, 'Get Many Vote', http.OK);
+  };
+  sendResponse(await getData());
+};
+
+const getOneVote = async (req, res) => {
+  const { userId } = (req.params.userId) ? req.params:req;
+  const getData = async () => queryHandler.getOneVote(userId);
+  const sendResponse = async (result) => {
+    (result.err) ? wrapper.response(res, 'fail', result, 'Get One Vote', httpError.NOT_FOUND)
+      : wrapper.response(res, 'success', result, 'Get One Vote', http.OK);
   };
   sendResponse(await getData());
 };
@@ -30,6 +40,24 @@ const createCandidate = async (req, res) => {
       : wrapper.response(res, 'success', result, 'Create Candidate', http.CREATED);
   };
   sendResponse(await postRequest(payload));
+};
+
+const deleteCandidate = async (req, res) => {
+  const postRequest = async ( ) => commandHandler.deleteCandidate();
+  const sendResponse = async (result) => {
+    (result.err) ? wrapper.response(res, 'fail', result, 'Delete Candidate')
+      : wrapper.response(res, 'success', result, 'Delete Kandidat', http.OK);
+  };
+  sendResponse(await postRequest());
+};
+
+const deleteVote = async (req, res) => {
+  const postRequest = async ( ) => commandHandler.deleteVote();
+  const sendResponse = async (result) => {
+    (result.err) ? wrapper.response(res, 'fail', result, 'Delete Vote')
+      : wrapper.response(res, 'success', result, 'Delete Vote', http.OK);
+  };
+  sendResponse(await postRequest());
 };
 
 const createVote = async (req, res) => {
@@ -45,6 +73,9 @@ const createVote = async (req, res) => {
 module.exports = {
   getManyCandidate,
   getManyVote,
+  getOneVote,
   createCandidate,
   createVote,
+  deleteCandidate,
+  deleteVote
 };

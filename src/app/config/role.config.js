@@ -3,7 +3,10 @@ module.exports = {
     "/api/users/v1/user",
     "/api/vote/v1/vote/",
     "/api/candidate/v1/list",
-    "/api/auth/v1/signout"
+    "/api/candidate/v1/candidate",
+    "/api/vote/v1/user",
+    "/api/auth/v1/signout",
+    "/api/vote/v1/vote/:candidateId"
   ],
   nonFormal: [
     "/api/users/v1/user",

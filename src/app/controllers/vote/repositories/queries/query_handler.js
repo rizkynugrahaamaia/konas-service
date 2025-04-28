@@ -20,7 +20,17 @@ const getManyVote = async () => {
   return result;
 };
 
+const getOneVote = async (userId) => {
+  const getData = async () => {
+    const result = await vote.viewOneVote(userId);
+    return result;
+  };
+  const result = await getData();
+  return result;
+};
+
 module.exports = {
   getManyCandidate,
   getManyVote,
+  getOneVote
 };

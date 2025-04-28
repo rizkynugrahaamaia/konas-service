@@ -7,8 +7,14 @@ const wrapper = require('../helpers/utils/wrapper');
 const { UnauthorizedError } = require('../helpers/error');
 
 verifyToken = (req, res, next) => {
+  // Mengambil Token dari Cookie
   let token = req.cookies.token;
+
   const path = req.route.path;
+
+  // Mengecek Keberadaan Token
+  // Jika token tidak ditemukan, maka middleware akan menghentikan eksekusi 
+  // dan mengembalikan respon "Unauthorized".
   if (!token) {
     return wrapper.response(res, 'fail', { err: new UnauthorizedError('Unauthorized') });
   }
@@ -21,15 +27,27 @@ verifyToken = (req, res, next) => {
         return wrapper.response(res, 'fail', { err: new UnauthorizedError('Unauthorized') });
       }
 
+      // Mengecek Hak Akses Role
+      // Jika pengguna bukan "Super Admin", maka sistem akan mengecek 
+      // apakah peran pengguna memiliki akses ke endpoint yang diminta
       if(decoded.role != "Super Admin"){
-        const allPath = (decoded.role == "Sekertaris" || decoded.role == "Admin") ? ((decoded.role == "Admin") ? role.admin:role.sekertaris)
-        : ((decoded.role == "Formal") ? role.formal:role.nonFormal);
 
+        // Kode ini menentukan daftar endpoint (allPath) 
+        // yang bisa diakses berdasarkan peran pengguna.
+        const allPath = (decoded.role == "Sekertaris" || decoded.role == "Admin") ? 
+        ((decoded.role == "Admin") ? role.admin : role.sekertaris) : 
+        ((decoded.role == "Formal") ? role.formal : role.nonFormal);
+
+        // Jika pengguna tidak memiliki hak akses ke path yang diminta (req.route.path), 
+        // sistem akan mengembalikan respon "Role Unauthorized".
         if(!(allPath.indexOf(path) > -1)){
           return wrapper.response(res, 'fail', { err: new UnauthorizedError('Role Unauthorized') });
         }
       }
 
+      // Menyimpan userId di Request
+      // Jika semua validasi berhasil, userId dari token akan disimpan di req, 
+      // lalu eksekusi diteruskan ke middleware berikutnya dengan next().
       req.userId = decoded.userId;
       next();
     }
