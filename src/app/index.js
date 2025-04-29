@@ -22,20 +22,33 @@ const corsOptions = {
     }
   },
   credentials: true,
-  allowedHeaders: ['Authorization', 'Content-Type', 'Accept'], // Header yang diizinkan
+  allowedHeaders: ['Authorization', 'Content-Type', 'Accept', 'Origin', 'X-Requested-With'], // Header yang diizinkan
+  exposedHeaders: ['Set-Cookie'], // Header yang diekspos
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Metode HTTP yang diizinkan
+  preflightContinue: true, // Mengizinkan preflight request untuk metode selain GET dan POST
+  optionsSuccessStatus: 204, // Status sukses untuk preflight request
+  maxAge: 3600 // Durasi cache preflight request dalam detik
 };
 
 app.use(cors(corsOptions)); // Terapkan middleware CORS
+
+// Tambahkan middleware untuk header tambahan
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept,Authorization');
+  next();
+});
+
+
+app.use(cookieParser()); //Middleware untuk mengurai cookie dari request
 
 // parse requests of content-type - application/json
 app.use(express.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
-
-// Initialize cookie-parser
-app.use(cookieParser());
 
 app.use(basicAuth.init());
 
