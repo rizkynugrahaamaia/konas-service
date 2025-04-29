@@ -64,13 +64,13 @@ const responseDb = (result, message = '', code = 200) => {
 
 const signResponse = (res, result, message = '', code = 200) => {
   const { token, info:data } = result.data;
-  res.status(code).cookie('token', token, {
-    // domain: 'konas-web.vercel.app', // Set to your base domain
-    httpOnly: true,
-    expires: new Date(new Date().getTime() + 1000 * 60 * 15),
-    sameSite: 'none',
-    secure: process.env.NODE_ENV === 'production',
-    domain: process.env.WEB_URL
+  res.status(code)
+  .cookie('token', token, {
+    httpOnly: true, // menjaga cookie tetap aman dari akses JavaScript
+    secure: process.env.NODE_ENV === 'production', // Hanya mengirim cookie melalui HTTPS
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // Mengatur SameSite untuk menghindari masalah dengan cross-site request
+    expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 jam
+    path: '/', //tersedia untuk semua path
   }).send({
     success: true,
     data,

@@ -22,36 +22,33 @@ const corsOptions = {
     }
   },
   credentials: true,
-  allowedHeaders: ['Authorization', 'Content-Type', 'Accept', 'Origin', 'X-Requested-With'], // Header yang diizinkan
-  exposedHeaders: ['Set-Cookie'], // Header yang diekspos
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Metode HTTP yang diizinkan
-  preflightContinue: true, // Mengizinkan preflight request untuk metode selain GET dan POST
+  allowedHeaders: [
+    'Authorization',
+    'Content-Type',
+    'Accept',
+    'Origin',
+    'X-Requested-With'
+  ], // Header yang diizinkan
+  exposedHeaders: ['Set-Cookie'], // Header yang diekspos
   optionsSuccessStatus: 204, // Status sukses untuk preflight request
-  maxAge: 3600 // Durasi cache preflight request dalam detik
+  maxAge: 24 * 60 * 60, // Durasi cache preflight request 24 jam dalam detik
 };
 
-app.use(cors(corsOptions)); // Terapkan middleware CORS
+// Terapkan middleware CORS
+app.use(cors(corsOptions));
 
-// Tambahkan middleware untuk header tambahan
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Credentials', true);
-  res.header('Access-Control-Allow-Origin', req.headers.origin);
-  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept,Authorization');
-  next();
-});
+// Cookie parser dengan secret key
+app.use(cookieParser(process.env.JWT_SECRET));
 
-
-app.use(cookieParser()); //Middleware untuk mengurai cookie dari request
-
-// parse requests of content-type - application/json
+// Body parser
 app.use(express.json());
-
-// parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
+// Basic auth initialization
 app.use(basicAuth.init());
 
+// Database connection
 const db = require("./models");
 db.sequelize.sync()
   .then(() => {
