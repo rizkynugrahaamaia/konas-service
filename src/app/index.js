@@ -8,8 +8,20 @@ const app = express();
 
 // Konfigurasi CORS
 const corsOptions = {
-  origin: process.env.WEB_URL, // Domain yang diizinkan
-  credentials: true, // Mengizinkan pengiriman cookie lintas domain
+  origin: function(origin, callback) {
+    const allowedOrigins = [
+      process.env.WEB_URL,
+      'http://localhost:3000'
+    ]; // Domain yang diizinkan
+    
+    // Mengizinkan request tanpa origin (seperti mobile apps atau curl requests)
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
   allowedHeaders: ['Authorization', 'Content-Type', 'Accept'], // Header yang diizinkan
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Metode HTTP yang diizinkan
 };
