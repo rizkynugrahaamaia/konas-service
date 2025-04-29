@@ -67,10 +67,11 @@ const signResponse = (res, result, message = '', code = 200) => {
   res.status(code)
   .cookie('token', token, {
     httpOnly: true, // menjaga cookie tetap aman dari akses JavaScript
-    secure: process.env.NODE_ENV === 'production', // Hanya mengirim cookie melalui HTTPS
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // Mengatur SameSite untuk menghindari masalah dengan cross-site request
-    expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 jam
+    secure: true, // Hanya mengirim cookie melalui HTTPS
+    sameSite: 'none', 
+    maxAge: 24 * 60 * 60 * 1000, // Gunakan maxAge daripada expires
     path: '/', //tersedia untuk semua path
+    domain: ".vercel.app", // Izinkan semua subdomain
   }).send({
     success: true,
     data,
