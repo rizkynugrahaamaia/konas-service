@@ -8,7 +8,13 @@ const { UnauthorizedError } = require('../helpers/error');
 
 verifyToken = (req, res, next) => {
   // Mengambil Token dari Cookie
-  let token = req.cookies.token;
+  // let token = req.cookies.token;
+
+  // Mengambil Token dari Header Authorization
+  const authHeader = req.headers['authorization'];
+
+  // Extract token from Bearer header
+  const token = authHeader && authHeader.split(' ')[1]; 
 
   const path = req.route.path;
 
@@ -16,7 +22,7 @@ verifyToken = (req, res, next) => {
   // Jika token tidak ditemukan, maka middleware akan menghentikan eksekusi 
   // dan mengembalikan respon "Unauthorized".
   if (!token) {
-    return wrapper.response(res, 'fail', { err: new UnauthorizedError('Unauthorized') });
+    return wrapper.response(res, 'fail', { err: new UnauthorizedError('No token provided') });
   }
 
   jwt.verify(

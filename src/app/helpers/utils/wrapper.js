@@ -65,23 +65,17 @@ const responseDb = (result, message = '', code = 200) => {
 const signResponse = (res, result, message = '', code = 200) => {
   const { token, info:data } = result.data;
   res.status(code)
-  .cookie('token', token, {
-    httpOnly: true, // menjaga cookie tetap aman dari akses JavaScript
-    secure: true, // Hanya mengirim cookie melalui HTTPS
-    sameSite: 'none', 
-    maxAge: 24 * 60 * 60 * 1000, // Gunakan maxAge daripada expires
-    path: '/', //tersedia untuk semua path
-    domain: ".vercel.app", // Izinkan semua subdomain
-  }).send({
+  .send({
     success: true,
     data,
     message,
-    code
+    code,
+    token //mengirimkan token JWT ke client
   });
 };
 
 const signOutResponse = (res, message = '', code = 200) => {
-  res.status(code).clearCookie('token').send({
+  res.status(code).send({
     success: true,
     data: null,
     message,

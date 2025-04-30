@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const cookieParser = require('cookie-parser');
+// const cookieParser = require('cookie-parser');
 require('dotenv').config();
 const basicAuth = require('../app/middleware/basicAuth');
 
@@ -29,17 +29,14 @@ const corsOptions = {
     'Accept',
     'Origin',
     'X-Requested-With'
-  ], // Header yang diizinkan
-  exposedHeaders: ['Set-Cookie'], // Header yang diekspos
-  optionsSuccessStatus: 204, // Status sukses untuk preflight request
-  maxAge: 24 * 60 * 60, // Durasi cache preflight request 24 jam dalam detik
+  ]// Header yang diizinkan
 };
 
 // Terapkan middleware CORS
 app.use(cors(corsOptions));
 
 // Cookie parser dengan secret key
-app.use(cookieParser(process.env.JWT_SECRET));
+// app.use(cookieParser(process.env.JWT_SECRET));
 
 // Body parser
 app.use(express.json());
