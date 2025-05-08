@@ -63,7 +63,7 @@ require('./routes/vote.routes')(app);
 
 // Simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to konas application v2." });
+  res.json({ message: "Welcome to konas application v2.1" });
 });
 
 module.exports = app;
